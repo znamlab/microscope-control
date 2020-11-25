@@ -28,6 +28,8 @@ classdef monitor_blanker < handle
     
     methods
         function obj = monitor_blanker()
+            % get handle to SI object
+            obj.hSI = evalin('base',obj.siHandle);
             % get the handle for the vDAQ device
             hResourceStore = dabs.resources.ResourceStore();
             hvDAQ = hResourceStore.filterByName(sprintf('vDAQ%d', obj.daqId));
@@ -43,9 +45,7 @@ classdef monitor_blanker < handle
             obj.hTask.cfgDigEdgeStartTrig(...
                 obj.hSI.hScan2D.trigBeamClkOutInternalTerm);
             obj.hTask.allowRetrigger = true;
-            % get handle to SI object
-            obj.hSI = evalin('base',obj.siHandle);
-            
+            obj.hTask.sampleMode = 'finite';
             obj.make_waveform()
             obj.start()
         end
@@ -100,6 +100,7 @@ classdef monitor_blanker < handle
             try
                 obj.hTask.writeOutputBuffer(...
                     [ obj.mon_waveform, obj.pmt_waveform ]);
+                obj.hTask.samplesPerTrigger = size(obj.mon_waveform, 1);
                 obj.hTask.start();
             catch ME
                 error('Failed to start task')

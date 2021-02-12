@@ -60,16 +60,17 @@ classdef monitor_blanker < handle
                 round(obj.pmt_timings * 1e-6 * obj.hTask.sampleRate);
 
             obj.mon_waveform = [ ...
-                zeros(mon_timings_samples(1), 1); 
-                ones(mon_timings_samples(2), 1); 
-                zeros(mon_timings_samples(3), 1); 
-                ones(mon_timings_samples(4), 1)  ];
+                ones(mon_timings_samples(1), 1); 
+                zeros(mon_timings_samples(2), 1); 
+                ones(mon_timings_samples(3), 1); 
+                zeros(mon_timings_samples(4), 1)  ];
             
             obj.pmt_waveform = [ ...
-                zeros(pmt_timings_samples(1), 1); 
-                ones(pmt_timings_samples(2), 1); 
-                zeros(pmt_timings_samples(3), 1); 
-                ones(pmt_timings_samples(4), 1)  ];
+                ones(pmt_timings_samples(1), 1); 
+                zeros(pmt_timings_samples(2), 1); 
+                ones(pmt_timings_samples(3), 1); 
+                zeros(pmt_timings_samples(4), 1);
+                ones(pmt_timings_samples(5), 1) ];
         end
         
         function set.mon_timings(obj, value)
@@ -86,13 +87,13 @@ classdef monitor_blanker < handle
         
         function set.pmt_timings(obj, value)
             % update waveform and restart task
-            if numel(value)==4 && all(value>0)
+            if numel(value)==5 && all(value>0)
                 obj.pmt_timings = value;
                 obj.make_waveform()
                 obj.stop()
                 obj.start()
             else
-                fprintf('Waveform timings must be a positive 4 element vector.\n')
+                fprintf('Waveform timings must be a positive 5 element vector.\n')
             end            
         end
         

@@ -19,8 +19,8 @@ classdef monitor_blanker < handle
         pmt_line = 1
         
         % in microseconds
-        mon_timings = [ 15 48 15 48 ]
-        pmt_timings = [ 15 48 15 48 ]
+        mon_timings = [ 0 45 17 45 1 ];
+        pmt_timings = [ 3 40 24 40 1 ];
         
         mon_waveform
         pmt_waveform
@@ -60,10 +60,11 @@ classdef monitor_blanker < handle
                 round(obj.pmt_timings * 1e-6 * obj.hTask.sampleRate);
 
             obj.mon_waveform = [ ...
-                ones(mon_timings_samples(1), 1); 
-                zeros(mon_timings_samples(2), 1); 
-                ones(mon_timings_samples(3), 1); 
-                zeros(mon_timings_samples(4), 1)  ];
+                zeros(mon_timings_samples(1), 1); 
+                ones(mon_timings_samples(2), 1); 
+                zeros(mon_timings_samples(3), 1); 
+                ones(mon_timings_samples(4), 1);
+                zeros(mon_timings_samples(5), 1)  ];
             
             obj.pmt_waveform = [ ...
                 ones(pmt_timings_samples(1), 1); 
@@ -75,7 +76,7 @@ classdef monitor_blanker < handle
         
         function set.mon_timings(obj, value)
             % update waveform and restart task
-            if numel(value)==4 && all(value>0)
+            if numel(value)==5 && all(value>=0)
                 obj.mon_timings = value;
                 obj.make_waveform()
                 obj.stop()
@@ -87,7 +88,7 @@ classdef monitor_blanker < handle
         
         function set.pmt_timings(obj, value)
             % update waveform and restart task
-            if numel(value)==5 && all(value>0)
+            if numel(value)==5 && all(value>=0)
                 obj.pmt_timings = value;
                 obj.make_waveform()
                 obj.stop()

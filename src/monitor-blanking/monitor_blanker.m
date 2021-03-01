@@ -22,6 +22,8 @@ classdef monitor_blanker < handle
         mon_timings = [ 0 45 17 45 1 ];
         pmt_timings = [ 3 40 24 40 1 ];
         
+        trigger = true
+        
         mon_waveform
         pmt_waveform
     end
@@ -46,6 +48,7 @@ classdef monitor_blanker < handle
                 obj.hSI.hScan2D.trigBeamClkOutInternalTerm);
             obj.hTask.allowRetrigger = true;
             obj.hTask.sampleMode = 'finite';
+            obj.hTask.triggerOnStart = 1;                
             obj.make_waveform()
             obj.start()
         end
@@ -96,6 +99,16 @@ classdef monitor_blanker < handle
             else
                 fprintf('Waveform timings must be a positive 5 element vector.\n')
             end            
+        end
+        
+        function set.trigger(obj, value)
+            obj.stop()
+            if value
+                obj.hTask.sampleMode = 'finite';
+            else
+                obj.hTask.sampleMode = 'continuous';
+            end
+            obj.start()
         end
         
         function start(obj)

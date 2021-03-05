@@ -19,8 +19,8 @@ classdef monitor_blanker < handle
         pmt_line = 1
         
         % in microseconds
-        mon_timings = [ 0 45 17 45 1 ];
-        pmt_timings = [ 3 40 24 40 1 ];
+        mon_timings = [ 46 15 46 12 1 ];
+        pmt_timings = [ 4 40 22 40 14 ];
         
         trigger = true
         

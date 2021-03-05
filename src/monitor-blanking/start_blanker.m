@@ -1,6 +1,6 @@
 B = monitor_blanker();
 %%
-B.mon_timings = [ 0 45 17 45 1 ];
-B.pmt_timings = [ 3 41 22 41 1 ];
+B.mon_timings = [ 48 11 49 11 1 ];
+B.pmt_timings = [ 2 44 19 43 12 ];
 %%
 B.start
